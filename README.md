@@ -8,7 +8,17 @@ forany runs a command on every directory.
 
 ## Quick start
 
-...
+To run a command on every directory, run `forany` and provide the command as a parameter. If the command contains spaces, you need to wrap it within quotes.
+
+```bash
+$ forany 'git push'
+```
+
+By default, the command will be run silently. If you actually want to see the output of the command, additionally provide the `--verbose` option.
+
+```bash
+$ forany 'git status' --verbose
+```
 
 ## Running the build
 
