@@ -27,7 +27,7 @@ program
   .usage('[options] <command>')
   .option('--color', 'enforce color output')
   .option('--no-color', 'disable color output')
-  .option('--verbose', 'verbose output')
+  .option('-v, --verbose', 'verbose output')
   .parse(process.argv);
 
 if (process.argv.length === 2) {
