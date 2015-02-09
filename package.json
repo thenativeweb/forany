@@ -1,0 +1,34 @@
+{
+  "name": "forany",
+  "version": "0.0.0",
+  "description": "forany runs a command on every directory.",
+  "contributors": [
+    {
+      "name": "Golo Roden",
+      "email": "golo.roden@thenativeweb.io"
+    },
+    {
+      "name": "Matthias Wagler",
+      "email": "matthias.wagler@thenativeweb.io"
+    }
+  ],
+  "bin": {
+    "forany": "bin/forany.js"
+  },
+  "dependencies": {
+    "async": "0.9.0",
+    "buntstift": "0.1.0",
+    "commander": "2.6.0",
+    "update-notifier": "0.3.0"
+  },
+  "devDependencies": {
+    "assertthat": "0.4.1",
+    "grunt": "0.4.5",
+    "tourism": "0.13.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/thenativeweb/forany.git"
+  },
+  "license": "MIT"
+}
