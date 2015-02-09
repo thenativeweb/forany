@@ -66,5 +66,5 @@ async.each(directories, function (directory, callback) {
     return buntstift.warn('Processing {{count}} of {{total}} directories failed.', { count: directoriesFailCount, total: directoriesCount });
   }
 
-  buntstift.info('Successfully processed {{count}} directories.', { count: directoriesCount });
+  buntstift.success('Successfully processed {{count}} directories.', { count: directoriesCount });
 });
