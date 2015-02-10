@@ -39,7 +39,7 @@ directories = fs.readdirSync(process.cwd());
 directoriesCount = directories.length;
 directoriesFailCount = 0;
 
-async.each(directories, function (directory, callback) {
+async.eachSeries(directories, function (directory, callback) {
   var directoryAbsolute = path.join(process.cwd(), directory);
 
   if (!fs.statSync(directory).isDirectory()) {
