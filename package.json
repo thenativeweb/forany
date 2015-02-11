@@ -1,6 +1,6 @@
 {
   "name": "forany",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "forany runs a command on every directory.",
   "contributors": [
     {
