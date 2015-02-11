@@ -17,14 +17,14 @@
   },
   "dependencies": {
     "async": "0.9.0",
-    "buntstift": "0.1.1",
+    "buntstift": "0.1.2",
     "commander": "2.6.0",
     "update-notifier": "0.3.0"
   },
   "devDependencies": {
     "assertthat": "0.4.1",
     "grunt": "0.4.5",
-    "tourism": "0.13.1"
+    "tourism": "0.13.2"
   },
   "repository": {
     "type": "git",
