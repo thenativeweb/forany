@@ -47,19 +47,23 @@ async.eachSeries(directories, function (directory, callback) {
     return callback(null);
   }
 
-  childProcess.exec(program.args, {
-    cwd: directoryAbsolute
-  }, function (err, stdout, stderr) {
-    if (err) {
-      directoriesFailCount++;
-      buntstift.error('{{directory}} (exit code: {{code}})', { directory: directory, code: err.code });
-      buntstift.verbose(stderr);
-      return callback(null);
-    }
+  buntstift.waitFor(function (stopWaiting) {
+    childProcess.exec(program.args, {
+      cwd: directoryAbsolute
+    }, function (err, stdout, stderr) {
+      stopWaiting();
 
-    buntstift.success('{{directory}}', { directory: directory });
-    buntstift.verbose(stdout);
-    callback(null);
+      if (err) {
+        directoriesFailCount++;
+        buntstift.error('{{directory}} (exit code: {{code}})', { directory: directory, code: err.code });
+        buntstift.verbose(stderr);
+        return callback(null);
+      }
+
+      buntstift.success('{{directory}}', { directory: directory });
+      buntstift.verbose(stdout);
+      callback(null);
+    });
   });
 }, function () {
   if (directoriesFailCount > 0) {
