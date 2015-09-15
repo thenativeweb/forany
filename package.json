@@ -16,15 +16,14 @@
     "forany": "bin/forany.js"
   },
   "dependencies": {
-    "async": "0.9.0",
-    "buntstift": "0.1.2",
-    "commander": "2.6.0",
-    "update-notifier": "0.3.0"
+    "async": "1.4.2",
+    "buntstift": "0.4.0",
+    "commander": "2.8.1",
+    "update-notifier": "0.5.0"
   },
   "devDependencies": {
-    "assertthat": "0.4.1",
     "grunt": "0.4.5",
-    "tourism": "0.13.2"
+    "tourism": "0.21.0"
   },
   "repository": {
     "type": "git",
