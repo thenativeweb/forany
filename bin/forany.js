@@ -66,6 +66,11 @@ async.eachSeries(directories, function (directory, callback) {
         directoriesFailCount++;
         buntstift.verbose(stderr.replace(/\n/g, '\n  '));
         buntstift.error('{{directory}} (exit code: {{code}})', { directory: directory, code: err.code });
+
+        if (isVerbose()) {
+          buntstift.line();
+        }
+
         return callback(null);
       }
 
