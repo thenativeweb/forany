@@ -2,23 +2,40 @@
 
 'use strict';
 
-var childProcess = require('child_process'),
-    fs = require('fs'),
-    path = require('path');
+const childProcess = require('child_process'),
+      fs = require('fs'),
+      os = require('os'),
+      path = require('path');
 
-var async = require('async'),
-    buntstift = require('buntstift'),
-    program = require('commander'),
-    updateNotifier = require('update-notifier');
+// Parsing the ~/.forany.json file *must* happen before loading any npm modules,
+// because they check the CLI flags on startup.
+try {
+  /* eslint-disable global-require */
+  const dotfile = require(path.join(os.homedir(), '.forany.json'));
+  /* eslint-enable global-require */
 
-var packageJson = require('../package.json');
+  if (dotfile.verbose) {
+    process.argv.push('--verbose');
+  }
+  if (dotfile.noColor) {
+    process.argv.push('--no-color');
+  }
+  if (dotfile.color) {
+    process.argv.push('--color');
+  }
+} catch (ex) {
+  // If no .forany.json exists, nevermind.
+}
 
-var directories,
-    directoriesCount,
-    directoriesFailCount;
+const async = require('async'),
+      buntstift = require('buntstift'),
+      program = require('commander'),
+      updateNotifier = require('update-notifier');
 
-var isVerbose = function () {
-  return (process.argv.indexOf('--verbose') !== -1) || (process.argv.indexOf('-v') !== -1);
+const packageJson = require('../package.json');
+
+const isVerbose = function () {
+  return process.argv.includes('--verbose') || process.argv.includes('-v');
 };
 
 updateNotifier({
@@ -38,34 +55,39 @@ if (process.argv.length === 2) {
   program.help();
 }
 
-directories = fs.readdirSync(process.cwd());
+/* eslint-disable no-sync */
+const directories = fs.readdirSync(process.cwd());
+/* eslint-enable no-sync */
 
-directoriesCount = directories.length;
-directoriesFailCount = 0;
+let directoriesCount = directories.length,
+    directoriesFailCount = 0;
 
-async.eachSeries(directories, function (directory, callback) {
-  var directoryAbsolute = path.join(process.cwd(), directory);
+async.eachSeries(directories, (directory, callback) => {
+  const directoryAbsolute = path.join(process.cwd(), directory);
 
+  /* eslint-disable no-sync */
   if (!fs.statSync(directory).isDirectory()) {
-    directoriesCount--;
+    /* eslint-enable no-sync */
+    directoriesCount -= 1;
+
     return callback(null);
   }
 
   if (isVerbose()) {
-    buntstift.info('Processing {{directory}}...', { directory: directory });
+    buntstift.info('Processing {{directory}}...', { directory });
     buntstift.newLine();
   }
 
-  buntstift.waitFor(function (stopWaiting) {
+  buntstift.waitFor(stopWaiting => {
     childProcess.exec(program.args, {
       cwd: directoryAbsolute
-    }, function (err, stdout, stderr) {
+    }, (err, stdout, stderr) => {
       stopWaiting();
 
       if (err) {
-        directoriesFailCount++;
+        directoriesFailCount += 1;
         buntstift.verbose(stderr.replace(/\n/g, '\n  '));
-        buntstift.error('{{directory}} (exit code: {{code}})', { directory: directory, code: err.code });
+        buntstift.error('{{directory}} (exit code: {{code}})', { directory, code: err.code });
 
         if (isVerbose()) {
           buntstift.line();
@@ -75,7 +97,7 @@ async.eachSeries(directories, function (directory, callback) {
       }
 
       buntstift.verbose(stdout.replace(/\n/g, '\n  '));
-      buntstift.success('{{directory}}', { directory: directory });
+      buntstift.success('{{directory}}', { directory });
 
       if (isVerbose()) {
         buntstift.line();
@@ -84,7 +106,7 @@ async.eachSeries(directories, function (directory, callback) {
       callback(null);
     });
   });
-}, function () {
+}, () => {
   if (!isVerbose()) {
     buntstift.line();
   }
