@@ -73,16 +73,17 @@ async.eachSeries(directories, (directory, callback) => {
     return callback(null);
   }
 
-  if (isVerbose()) {
-    buntstift.info('Processing {{directory}}...', { directory });
-    buntstift.newLine();
-  }
-
   buntstift.waitFor(stopWaiting => {
     childProcess.exec(program.args, {
       cwd: directoryAbsolute
     }, (err, stdout, stderr) => {
       stopWaiting();
+
+      if (stdout.trim().length === 0 && stderr.trim().length === 0) {
+        return callback(null);
+      }
+
+      buntstift.info('{{directory}}', { directory });
 
       if (err) {
         directoriesFailCount += 1;
@@ -97,7 +98,6 @@ async.eachSeries(directories, (directory, callback) => {
       }
 
       buntstift.verbose(stdout.replace(/\n/g, '\n  '));
-      buntstift.success('{{directory}}', { directory });
 
       if (isVerbose()) {
         buntstift.line();
