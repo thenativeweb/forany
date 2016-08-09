@@ -51,7 +51,13 @@ program.
   option('-v, --verbose', 'verbose output').
   parse(process.argv);
 
-if (process.argv.length === 2) {
+if (process.argv.filter(arg =>
+  arg !== '--no-color' &&
+  arg !== '--color' &&
+  arg !== '--v' &&
+  arg !== '--verbose' &&
+  arg !== '--help'
+).length === 2) {
   program.help();
 }
 
