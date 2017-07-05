@@ -80,7 +80,7 @@ async.eachSeries(directories, (directory, callback) => {
   }
 
   buntstift.waitFor(stopWaiting => {
-    childProcess.exec(program.args, {
+    childProcess.exec(program.args[0], {
       cwd: directoryAbsolute
     }, (err, stdout, stderr) => {
       stopWaiting();
